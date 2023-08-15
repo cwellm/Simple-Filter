@@ -9,6 +9,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "BiquadFilter.h"
 
 //==============================================================================
 /**
@@ -56,7 +57,27 @@ public:
     void getStateInformation (juce::MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    //==============================================================================
+    // Audio Parameters
+    
+
 private:
     //==============================================================================
+    juce::AudioProcessorValueTreeState apvts;
+
+    std::atomic<float>* pmCutoffFreq = nullptr;
+    std::atomic<float>* pmSteepness = nullptr;
+    std::atomic<float>* pmCenterFreq = nullptr;
+    std::atomic<float>* pmBandWidth = nullptr;
+    std::atomic<float>* pmFilterTypeChoice = nullptr;
+
+    std::unique_ptr<cw::Filter::BiquadFilter> biquadFilterL = nullptr;
+    std::unique_ptr<cw::Filter::BiquadFilter> biquadFilterR = nullptr;
+
+    int filterTypeIndex{ 0 };
+    int previousFilterTypeIndex{ 0 };
+    int maxExpectedBlockSize{ 0 };
+
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (Processor)
 };

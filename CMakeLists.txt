@@ -58,26 +58,85 @@ target_compile_definitions(${PROJ_NAME}
         JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_plugin` call
         JUCE_VST3_CAN_REPLACE_VST2=0)
 
+add_subdirectory(src)
+
+# set and link libraries
+set(public_libs 
+    juce::juce_recommended_config_flags
+    juce::juce_recommended_lto_flags
+    juce::juce_recommended_warning_flags   
+)
+
+set(private_libs 
+    # AudioPluginData           # If we'd created a binary data target, we'd link to it here
+    juce::juce_audio_utils#
+    juce::juce_audio_basics
+    juce::juce_audio_devices
+    juce::juce_audio_formats
+    juce::juce_audio_plugin_client
+    juce::juce_audio_processors
+    juce::juce_core
+    juce::juce_data_structures
+    juce::juce_events
+    juce::juce_graphics
+    juce::juce_gui_basics
+    juce::juce_gui_extra
+)
+
+# linking and JuceHeader for project target
 target_link_libraries(${PROJ_NAME}
     PRIVATE
-        # AudioPluginData           # If we'd created a binary data target, we'd link to it here
-        juce::juce_audio_utils#
-		juce::juce_audio_basics
-        juce::juce_audio_devices
-		juce::juce_audio_formats
-		juce::juce_audio_plugin_client
-		juce::juce_audio_processors
-		juce::juce_core
-		juce::juce_data_structures
-		juce::juce_events
-		juce::juce_graphics
-		juce::juce_gui_basics
-		juce::juce_gui_extra
+        ${private_libs}
     PUBLIC
-        juce::juce_recommended_config_flags
-        juce::juce_recommended_lto_flags
-        juce::juce_recommended_warning_flags)
-
+        ${public_libs}
+)
 juce_generate_juce_header(${PROJ_NAME})
 
-add_subdirectory(src)
+# --------------------------------------------------------------
+# ---------------------- Add Test project ----------------------
+# include tests
+option(WITH_TESTS "Determines whether tests are included in the build.")
+if (WITH_TESTS)
+
+    add_executable(Test${PROJ_NAME})
+
+    get_target_property(plugin_include_dirs ${PROJ_NAME} INCLUDE_DIRECTORIES)
+    get_target_property(plugin_linking_dirs ${PROJ_NAME} LINK_DIRECTORIES)
+    get_target_property(plugin_linking_libs ${PROJ_NAME} LINK_LIBRARIES)
+
+    string(REPLACE juce::juce_audio_plugin_client "" mod_plugin_include_dirs ${plugin_include_dirs})
+
+    target_include_directories(Test${PROJ_NAME} PUBLIC ${mod_plugin_include_dirs})
+    target_link_directories(Test${PROJ_NAME} PUBLIC ${plugin_linking_dirs})
+    target_link_libraries(Test${PROJ_NAME} PUBLIC ${plugin_linking_libs})
+
+    add_subdirectory(test)
+
+    add_library(custom_sources STATIC
+    src/Filter.cpp 
+    src/IRFilter.cpp
+    src/TFFilter.cpp
+    src/RingBuffer.cpp
+    src/Chainable.cpp
+    src/FilterChain.cpp
+    src/BiquadFilter.cpp
+    src/BiquadCoeff.cpp
+    src/BandpassFilter.cpp
+    )
+    target_compile_options(custom_sources PUBLIC /std:c++17)
+
+    target_link_libraries(Test${PROJ_NAME}
+        PRIVATE
+            ${private_libs}
+            custom_sources
+        PUBLIC
+            ${public_libs}
+    )
+
+    # juce_generate_juce_header(Test${PROJ_NAME}) # needs to be on this level
+    target_include_directories(Test${PROJ_NAME} PUBLIC src)
+
+    include(GoogleTest)
+    enable_testing()
+    gtest_discover_tests(Test${PROJ_NAME}) # from CMake itself
+endif()

@@ -14,6 +14,9 @@ jobs:
     env:
       Dockerfile: Dockerfile.Linux
     steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
       - name: Execute Build
         run: docker compose up --build
       - name: Clean up

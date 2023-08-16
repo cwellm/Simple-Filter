@@ -2,5 +2,5 @@
 build/
 
 # local scripts
-build.bat
+/build.bat
 localtests.txt

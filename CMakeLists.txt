@@ -17,6 +17,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 set(PROJ_NAME "Simple_Filter")
+set(ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 project(${PROJ_NAME} VERSION ${PROJECT_VERSION} LANGUAGES C CXX)
 
@@ -140,3 +141,12 @@ if (WITH_TESTS)
     enable_testing()
     gtest_discover_tests(Test${PROJ_NAME}) # from CMake itself
 endif()
+
+# --------------------------------------------------------------
+# ---------------------- Copy Artifact -------------------------
+add_custom_command(TARGET ${PROJ_NAME}
+POST_BUILD
+COMMAND cmake -E copy "$<TARGET_FILE:${PROJ_NAME}>" "${ROOT_DIR}/artifacts/$<TARGET_FILE_NAME:${PROJ_NAME}>"
+)
+
+message(STATUS "Generation of build tree successful.")

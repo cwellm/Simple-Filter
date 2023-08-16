@@ -1,0 +1,50 @@
+# syntax=docker/dockerfile:1.6.0
+
+# ------------ first stage: build cmake ------------
+FROM ubuntu:focal AS ubuntu-cmake
+
+ARG cmake_version=3.27.2
+
+RUN <<EOF 
+echo "Installing system dependencies"
+apt-get update
+apt-get install -y curl g++ make openssl libssl-dev
+EOF
+
+RUN  <<EOF
+echo "Getting CMake version ${cmake_version}"
+curl -L -o out.tar.gz https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}.tar.gz
+tar -xf out.tar.gz
+EOF
+
+RUN <<EOF
+echo "Bootstrapping CMake..."
+cd cmake-${cmake_version}
+./bootstrap
+EOF
+
+RUN <<EOF
+echo "Installing CMake..."
+cd cmake-${cmake_version}
+make
+make install
+cmake --version
+EOF
+
+# ------------ second stage ------------
+FROM ubuntu-cmake
+
+RUN <<EOF
+echo "Installing JUCE Linux dependencies"
+apt-get install -y libasound2-dev libjack-jackd2-dev
+apt-get install -y ladspa-sdk
+apt-get install -y libcurl4-openssl-dev
+apt-get install -y libfreetype6-dev
+apt-get install -y libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev
+apt-get install -y libwebkit2gtk-4.0-dev
+apt-get install -y libglu1-mesa-dev mesa-common-dev
+EOF
+
+COPY . ./
+
+ENTRYPOINT /bin/bash CI/build.sh

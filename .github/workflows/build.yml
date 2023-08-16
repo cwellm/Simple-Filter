@@ -13,7 +13,8 @@ jobs:
     on: ubuntu-22.04
     env:
       Dockerfile: Dockerfile.Linux
-    - name: Execute Build
-      run: docker compose up --build
-    - name: Clean up
-      run: docker compose down
+    steps:
+      - name: Execute Build
+        run: docker compose up --build
+      - name: Clean up
+        run: docker compose down

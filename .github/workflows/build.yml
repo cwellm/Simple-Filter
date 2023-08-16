@@ -1,4 +1,5 @@
 name: Build
+run-name: Build
 
 on:
   push:
@@ -8,10 +9,10 @@ on:
   pull_request:
 
 jobs:
-  on: ubuntu-22.04
-  env:
-    Dockerfile: Dockerfile.Linux
   build:
+    on: ubuntu-22.04
+    env:
+      Dockerfile: Dockerfile.Linux
     - name: Execute Build
       run: docker compose up --build
     - name: Clean up

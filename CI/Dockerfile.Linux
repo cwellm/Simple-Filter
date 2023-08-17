@@ -36,15 +36,29 @@ FROM ubuntu-cmake
 
 RUN <<EOF
 echo "Installing JUCE Linux dependencies"
-apt-get install -y libasound2-dev libjack-jackd2-dev
+echo "......libasound2-dev libjack-jackd2-dev......"
+DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends libasound2-dev libjack-jackd2-dev
+echo "......ladspa-sdk......"
 apt-get install -y ladspa-sdk
+echo "......libcurl4-openssl-dev......"
 apt-get install -y libcurl4-openssl-dev
+echo "......libfreetype6-dev......"
 apt-get install -y libfreetype6-dev
+echo "......libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev......"
 apt-get install -y libx11-dev libxcomposite-dev libxcursor-dev libxcursor-dev libxext-dev libxinerama-dev libxrandr-dev libxrender-dev
+echo "......libwebkit2gtk-4.0-dev......"
 apt-get install -y libwebkit2gtk-4.0-dev
+echo "......libglu1-mesa-dev mesa-common-dev......"
 apt-get install -y libglu1-mesa-dev mesa-common-dev
+echo "Installations DONE"
 EOF
 
 COPY . ./
+
+RUN <<EOF
+echo "------------------------------------------------------------------------------------------"
+echo "Now going to build......"
+echo "------------------------------------------------------------------------------------------"
+EOF
 
 ENTRYPOINT /bin/bash CI/build.sh

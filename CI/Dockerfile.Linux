@@ -54,6 +54,7 @@ apt-get install -y --no-install-recommends libglu1-mesa-dev mesa-common-dev
 echo "Installations DONE"
 EOF
 
+WORKDIR buildApp
 COPY . ./
 
 RUN <<EOF

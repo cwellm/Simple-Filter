@@ -24,7 +24,6 @@ jobs:
         if: ${{ always() }}
         run: docker compose down
 
-jobs:
   build-windows:
     runs-on: windows-2022
     env:

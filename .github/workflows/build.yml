@@ -9,15 +9,33 @@ on:
   pull_request:
 
 jobs:
-  build:
+  build-linux:
     runs-on: ubuntu-22.04
     env:
       Dockerfile: CI/Dockerfile.Linux
+      container_name: BuildApp
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: 'true'
       - name: Execute Build
-        run: docker compose up --build
+        run: docker compose up --build --exit-code-from build_service
+      - name: Clean up
+        if: ${{ always() }}
+        run: docker compose down
+
+jobs:
+  build-windows:
+    runs-on: windows-2022
+    env:
+      Dockerfile: CI/Dockerfile.Windows
+      container_name: BuildApp
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - name: Execute Build
+        if: ${{ always() }}
+        run: docker compose up --build --exit-code-from build_service
       - name: Clean up
         run: docker compose down

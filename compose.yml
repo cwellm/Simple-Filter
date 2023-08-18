@@ -1,6 +1,6 @@
 services:
   build_service:
-    container_name: BuildApp
+    container_name: ${container_name}
     build:
       context: .
       dockerfile: ${Dockerfile}

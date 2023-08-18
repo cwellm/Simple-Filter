@@ -1,9 +1,15 @@
 # syntax=docker/dockerfile:1.6.0
 
-# ------------ first stage: build cmake ------------
+FROM mcr.microsoft.com/windows/servercore:ltsc2022
 
-FROM mcr.microsoft.com/windows/nanoserver:ltsc2022 as windows-cmake
+WORKDIR app
+COPY test.bat ./test.bat
 
-ARG cmake_version=3.27.2
+RUN curl -Lo cmake.msi https://github.com/Kitware/CMake/releases/download/v3.27.2/cmake-3.27.2-windows-x86_64.msi
 
-#https://github.com/Kitware/CMake/releases/download/v3.27.2/cmake-3.27.2-windows-x86_64.msi
+SHELL ["cmd.exe", "/C"]
+RUN type nul>logfile.txt && \
+msiexec.exe /i cmake.msi /qn /passive /norestart /l* logfile.txt && \
+type logfile.txt
+
+ENTRYPOINT test.bat

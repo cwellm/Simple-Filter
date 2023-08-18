@@ -11,7 +11,7 @@ apt-get update
 apt-get install -y curl g++ make openssl libssl-dev
 EOF
 
-RUN  <<EOF
+RUN <<EOF
 echo "Getting CMake version ${cmake_version}"
 curl -L -o out.tar.gz https://github.com/Kitware/CMake/releases/download/v${cmake_version}/cmake-${cmake_version}.tar.gz
 tar -xf out.tar.gz

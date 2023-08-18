@@ -3,5 +3,5 @@ cmake --build build
 
 if [[ ! $? -eq 0 ]]; then
     echo "An error occured during build!"
-    exit 1
+    exit 42
 fi

@@ -58,7 +58,7 @@ jobs:
   build-macos:
     concurrency: 
       group: macos_build_${{ github.ref }}
-      cancel-in-progress: true
+      cancel-in-progress: true 
     runs-on: macos-12
     steps:
       - uses: actions/checkout@v3

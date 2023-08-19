@@ -21,7 +21,7 @@ namespace cw::Filter {
 	*/
 	template <class FirstChainable, class... OtherChainables>
 	class BiquadFilterChain : public GenericChain<BiquadFilter, FirstChainable, OtherChainables...> {
-		using GenericChain = GenericChain<BiquadFilter, FirstChainable, OtherChainables...>;
+		using GenericBiquadChain = GenericChain<BiquadFilter, FirstChainable, OtherChainables...>;
 
 		// std::map<int, std::vector<int>> as first arg. then I need a traversing algorithm - probably put this into
 		// an extra class? or put it here??? 
@@ -47,8 +47,8 @@ namespace cw::Filter {
 	// ------------------------------- Definitions -------------------------------
 	template <class FirstChainable, class... OtherChainables>
 	void BiquadFilterChain<FirstChainable, OtherChainables...>::reserveMemory(const int& size) {
-		auto it = GenericChain::chainables->begin();
-		while (it != GenericChain::chainables->end()) {
+		auto it = GenericBiquadChain::chainables->begin();
+		while (it != GenericBiquadChain::chainables->end()) {
 			(*it)->reserveMemory(size);
 			++it;
 		}
@@ -65,20 +65,20 @@ namespace cw::Filter {
 
 	template <class FirstChainable, class... OtherChainables>
 	void BiquadFilterChain<FirstChainable, OtherChainables...>::processBlock(float* inMemBlock, const int& inBlockSize) {
-		auto it = GenericChain::chainables->begin();
+		auto it = GenericBiquadChain::chainables->begin();
 
-		if (!GenericChain::isParallel) {
-			while (it != GenericChain::chainables->end()) {
+		if (!GenericBiquadChain::isParallel) {
+			while (it != GenericBiquadChain::chainables->end()) {
 				(*it)->processBlock(inMemBlock, inBlockSize);
 				++it;
 			}
 		}
 		else {
-			int chainSize = GenericChain::chainables->size();		
+			int chainSize = GenericBiquadChain::chainables->size();		
 			for (int i = 0; i < inBlockSize; ++i) {
 				BiquadFilter::temporary[i] = 0;
 			}
-			while (it != GenericChain::chainables->end()) {
+			while (it != GenericBiquadChain::chainables->end()) {
 				for (int i = 0; i < inBlockSize; ++i) {
 					copyOrig[i] = inMemBlock[i];
 				}

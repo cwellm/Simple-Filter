@@ -27,7 +27,7 @@ namespace cw::Filter {
 		// then template <std::map, Chainable...> or so?
 	public:
 		explicit FilterChain(std::map<int, std::vector<int>> filterGraph): filterGraph(filterGraph) {
-			isChain = true;
+			Chainable::isChain = true;
 		}
 
 		explicit FilterChain() : FilterChain(std::map<int, std::vector<int>>{ {0, {} } }) {}
@@ -47,8 +47,8 @@ namespace cw::Filter {
 
 	template <class FirstChainable, class... OtherChainables>
 	void FilterChain<FirstChainable, OtherChainables...>::processBlock(float* inMemBlock, const int& inBlockSize) {
-		auto it = chainables->begin();
-		while (it != chainables->end()) {
+		auto it = GenericChain::chainables->begin();
+		while (it != GenericChain::chainables->end()) {
 			(*it)->processBlock(inMemBlock, inBlockSize);
 			++it;
 		}

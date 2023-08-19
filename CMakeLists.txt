@@ -33,6 +33,13 @@ if (CMAKE_BUILD_TYPE)
 	message(STATUS "Build type = ${CMAKE_BUILD_TYPE}")
 endif()
 
+if (CLANG_COMPILER)
+    unset(CLANG_COMPILER CACHE)
+    message(STATUS "Project is being built with CLang toolchain.")
+    set(CMAKE_CXX_COMPILER foo)
+    #set(CMAKE_C_COMPILER)
+endif()
+
 #//  global compilation flag configuring windows sdk headers
 #//  preventing inclusion of min and max macros clashing with <limits>
 #define NOMINMAX 1
@@ -150,3 +157,8 @@ COMMAND cmake -E copy "$<TARGET_FILE:${PROJ_NAME}>" "${ROOT_DIR}/artifacts/$<TAR
 )
 
 message(STATUS "Generation of build tree successful.")
+
+# --------------------------------------------------------------
+# ---------------------- Tidying up ----------------------------
+
+message(STATUS "Tidying up...")

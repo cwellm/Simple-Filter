@@ -2,8 +2,9 @@
 
 
 namespace cw::Filter {
-
+	/*
 	void test() {
+
 		juce::File file{ "C:\\Users\\christoph\\Playgrounds\\JUCE\\GUITEsts\\NewProject\\Resources\\background.png" };
 		juce::MemoryBlock mmBlock{};
 		if (!file.loadFileAsData(mmBlock)) {
@@ -11,7 +12,7 @@ namespace cw::Filter {
 		}
 
 		juce::ImageFileFormat::loadFrom(juce::MemoryInputStream{ std::move(mmBlock) });
-	}
+	} */
 
 
 } // cw::Filter

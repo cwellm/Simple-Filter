@@ -10,6 +10,9 @@ on:
 
 jobs:
   build-linux:
+    concurrency: 
+      group: linux_build_${{ github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-22.04
     env:
       Dockerfile: CI/Dockerfile.Linux
@@ -41,6 +44,9 @@ jobs:
   #      run: docker compose down
 
   build-windows:
+    concurrency: 
+      group: windows_build_${{ github.ref }}
+      cancel-in-progress: true
     runs-on: windows-2022
     steps:
       - uses: actions/checkout@v3
@@ -50,6 +56,9 @@ jobs:
         run: "CI\\build.bat"
 
   build-macos:
+    concurrency: 
+      group: macos_build_${{ github.ref }}
+      cancel-in-progress: true
     runs-on: macos-12
     steps:
       - uses: actions/checkout@v3

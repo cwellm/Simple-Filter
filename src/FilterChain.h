@@ -21,6 +21,7 @@ namespace cw::Filter {
 	*/
 	template <class FirstChainable, class... OtherChainables>
 	class FilterChain : public GenericChain<Filter, FirstChainable, OtherChainables...> {
+		using GenericFilterChain = GenericChain<Filter, FirstChainable, OtherChainables...>;
 
 		// std::map<int, std::vector<int>> as first arg. then I need a traversing algorithm - probably put this into
 		// an extra class? or put it here??? 
@@ -47,8 +48,8 @@ namespace cw::Filter {
 
 	template <class FirstChainable, class... OtherChainables>
 	void FilterChain<FirstChainable, OtherChainables...>::processBlock(float* inMemBlock, const int& inBlockSize) {
-		auto it = GenericChain::chainables->begin();
-		while (it != GenericChain::chainables->end()) {
+		auto it = GenericFilterChain::chainables->begin();
+		while (it != GenericFilterChain::chainables->end()) {
 			(*it)->processBlock(inMemBlock, inBlockSize);
 			++it;
 		}

@@ -23,6 +23,11 @@ jobs:
           submodules: 'true'
       - name: Execute Build
         run: docker compose up --build --exit-code-from build_service
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Simple_Filter_Windows.vst3
+          path: ./artifacts/Simple_Filter.*
+          if-no-files-found: error
       - name: Clean up
         if: ${{ always() }}
         run: docker compose down
@@ -54,6 +59,11 @@ jobs:
           submodules: 'true'
       - name: Execute build
         run: "CI\\build.bat"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Simple_Filter_Windows.vst3
+          path: ./artifacts/Simple_Filter.*
+          if-no-files-found: error
 
   build-macos:
     concurrency: 
@@ -66,3 +76,8 @@ jobs:
           submodules: 'true'
       - name: Execute build
         run: "CI/build.sh"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Simple_Filter_Windows.vst3
+          path: ./artifacts/Simple_Filter.*
+          if-no-files-found: error

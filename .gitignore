@@ -4,4 +4,3 @@ build/
 # local scripts
 /build.bat
 localtests.txt
-/artifacts/

@@ -9,4 +9,4 @@ services:
     volumes:
       - type: bind
         source: ${workspace_path}/artifacts
-        target: ./artifacts
+        target: /buildApp/artifacts

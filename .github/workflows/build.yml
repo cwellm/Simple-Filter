@@ -25,8 +25,8 @@ jobs:
         run: docker compose up --build --exit-code-from build_service
       - uses: actions/upload-artifact@v3
         with:
-          name: Simple_Filter_Windows.vst3
-          path: ./artifacts/Simple_Filter.*
+          name: Simple_Filter_Linux
+          path: ./artifacts/*
           if-no-files-found: error
       - name: Clean up
         if: ${{ always() }}
@@ -61,8 +61,8 @@ jobs:
         run: "CI\\build.bat"
       - uses: actions/upload-artifact@v3
         with:
-          name: Simple_Filter_Windows.vst3
-          path: ./artifacts/Simple_Filter.*
+          name: Simple_Filter_Windows
+          path: ./artifacts/*
           if-no-files-found: error
 
   build-macos:
@@ -78,6 +78,6 @@ jobs:
         run: "CI/build.sh"
       - uses: actions/upload-artifact@v3
         with:
-          name: Simple_Filter_Windows.vst3
-          path: ./artifacts/Simple_Filter.*
+          name: Simple_Filter_Macos
+          path: ./artifacts/*
           if-no-files-found: error

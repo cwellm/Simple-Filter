@@ -48,7 +48,7 @@ Four different modes:
 For BP and BR, you can adjust the center frequency and the frequency window. These two interact with
 each other in the sense that the edge frequencies never go below 0 Hz and 20 kHz.
 
-![Screenshot of the current version of the plugin.](/res/shotv_0_1.png)
+![Screenshot of the current version of the plugin.](/res/SF_V1.0.png)
 
 ## Getting Started
 
@@ -93,16 +93,7 @@ These are readily-built libraries, which you can simply download, unzip and put 
 
 ## License
 
-This software is licensed under the GPL-3.0. See the [license text](LICENSE) for more information. Appropriate copyright notices are
-added to all source files which originate from the contributors of this repository. Copyright information of the dependencies in use
-within this software is given in the according links under the [Dependencies](#dependencies) section.
-
-Licenses used throughout this project can be found in the [LICENSES](LICENSES) folder. 
-
-Some files do not explicitly contain a license header. In this case, these are covered by the matching license as specified
-in the [dep5](.reuse/dep5) file (for instance, for binary files). See [here](https://reuse.software/faq/#bulk-license) for more information about this.
-
-To get a bill of materials of the files this repository (without dependencies), you can use [reuse spdx](https://reuse.readthedocs.io/en/latest/readme.html#usage).
+--- coming soon ---
 
 ## Development
 

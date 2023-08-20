@@ -112,11 +112,13 @@ if (WITH_TESTS)
     get_target_property(plugin_linking_dirs ${PROJ_NAME} LINK_DIRECTORIES)
     get_target_property(plugin_linking_libs ${PROJ_NAME} LINK_LIBRARIES)
 
-    string(REPLACE juce::juce_audio_plugin_client "" mod_plugin_include_dirs ${plugin_include_dirs})
+    #string(REPLACE juce_audio_plugin_client "" mod_plugin_include_dirs ${plugin_include_dirs})
+    #string(REPLACE juce_audio_plugin_client "" mod_plugin_linking_dirs ${plugin_linking_dirs})
+    string(REPLACE juce_audio_plugin_client_utils.cpp  mod_plugin_linking_libs ${plugin_linking_libs})
 
-    target_include_directories(Test${PROJ_NAME} PUBLIC ${mod_plugin_include_dirs})
+    target_include_directories(Test${PROJ_NAME} PUBLIC ${plugin_include_dirs})
     target_link_directories(Test${PROJ_NAME} PUBLIC ${plugin_linking_dirs})
-    target_link_libraries(Test${PROJ_NAME} PUBLIC ${plugin_linking_libs})
+    target_link_libraries(Test${PROJ_NAME} PUBLIC ${mod_plugin_linking_libs})
 
     add_subdirectory(test)
 
@@ -151,9 +153,9 @@ endif()
 
 # --------------------------------------------------------------
 # ---------------------- Copy Artifact -------------------------
-add_custom_command(TARGET ${PROJ_NAME}
+add_custom_command(TARGET ${PROJ_NAME}_VST3
 POST_BUILD
-COMMAND cmake -E copy "$<TARGET_FILE:${PROJ_NAME}>" "${ROOT_DIR}/artifacts/$<TARGET_FILE_NAME:${PROJ_NAME}>"
+COMMAND cmake -E copy "$<TARGET_FILE:${PROJ_NAME}_VST3>" "${ROOT_DIR}/artifacts/$<TARGET_FILE_NAME:${PROJ_NAME}_VST3>"
 )
 
 message(STATUS "Generation of build tree successful.")

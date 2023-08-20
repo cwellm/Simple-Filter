@@ -17,6 +17,7 @@ jobs:
     env:
       Dockerfile: CI/Dockerfile.Linux
       container_name: BuildApp
+      workspace_path: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v3
         with:

@@ -8,5 +8,5 @@ services:
       - "8080:8080"
     volumes:
       - type: bind
-        source: ./artifacts
+        source: ${workspace_path}/artifacts
         target: ./artifacts

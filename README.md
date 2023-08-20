@@ -48,7 +48,7 @@ Four different modes:
 For BP and BR, you can adjust the center frequency and the frequency window. These two interact with
 each other in the sense that the edge frequencies never go below 0 Hz and 20 kHz.
 
-![Screenshot of the current version of the plugin.](/res/SF_V1.0.png)
+![Screenshot of the current version of the plugin.](/res/SF_V1.0.PNG)
 
 ## Getting Started
 

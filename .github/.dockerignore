@@ -1,0 +1,4 @@
+**/Dockerfile.Linux
+.github/
+/build.bat
+build/

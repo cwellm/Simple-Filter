@@ -1,0 +1,24 @@
+# syntax=docker/dockerfile:1.6.0
+
+# ------------ first stage: build cmake ------------
+FROM mcr.microsoft.com/windows/servercore:ltsc2022 as windows-cmake
+
+RUN curl -Lo cmake.msi https://github.com/Kitware/CMake/releases/download/v3.27.2/cmake-3.27.2-windows-x86_64.msi
+
+SHELL ["cmd.exe", "/C"]
+RUN type nul>logfile.txt && \
+msiexec.exe /i cmake.msi /qn /passive /norestart /l* logfile.txt && \
+type logfile.txt
+
+# ------------ second stage ------------
+FROM windows-cmake
+
+WORKDIR buildApp
+COPY . ./
+
+SHELL ["cmd.exe", "/C"]
+RUN echo "------------------------------------------------------------------------------------------" && \
+echo "Now going to build......" && \
+echo "------------------------------------------------------------------------------------------"
+
+ENTRYPOINT ["CI\\build.bat"]

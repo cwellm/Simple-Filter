@@ -1,0 +1,12 @@
+services:
+  build_service:
+    container_name: ${container_name}
+    build:
+      context: .
+      dockerfile: ${Dockerfile}
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: bind
+        source: ${workspace_path}/artifacts
+        target: /buildApp/artifacts

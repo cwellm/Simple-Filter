@@ -21,13 +21,14 @@ namespace cw::Filter {
 	*/
 	template <class FirstChainable, class... OtherChainables>
 	class FilterChain : public GenericChain<Filter, FirstChainable, OtherChainables...> {
+		using GenericFilterChain = GenericChain<Filter, FirstChainable, OtherChainables...>;
 
 		// std::map<int, std::vector<int>> as first arg. then I need a traversing algorithm - probably put this into
 		// an extra class? or put it here??? 
 		// then template <std::map, Chainable...> or so?
 	public:
 		explicit FilterChain(std::map<int, std::vector<int>> filterGraph): filterGraph(filterGraph) {
-			isChain = true;
+			Chainable::isChain = true;
 		}
 
 		explicit FilterChain() : FilterChain(std::map<int, std::vector<int>>{ {0, {} } }) {}
@@ -47,8 +48,8 @@ namespace cw::Filter {
 
 	template <class FirstChainable, class... OtherChainables>
 	void FilterChain<FirstChainable, OtherChainables...>::processBlock(float* inMemBlock, const int& inBlockSize) {
-		auto it = chainables->begin();
-		while (it != chainables->end()) {
+		auto it = GenericFilterChain::chainables->begin();
+		while (it != GenericFilterChain::chainables->end()) {
 			(*it)->processBlock(inMemBlock, inBlockSize);
 			++it;
 		}

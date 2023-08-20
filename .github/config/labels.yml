@@ -1,0 +1,75 @@
+- name: Architecture
+  color: '30444E'
+  description: involving larger parts of the program
+
+- name: audio
+  color: '5C9A56'
+  description: Involving audio processing
+
+- name: bug
+  color: 'd73a4a'
+  description: Something isn't working
+
+- name: documentation
+  color: '0075ca'
+  description: Improvements or additions to documentation
+
+- name: duplicate
+  color: 'cfd3d7'
+  description: This issue or pull request already exists
+
+- name: feature
+  color: 'C3F59E'
+  description: A single feature
+
+- name: good first issue
+  color: '7057ff'
+  description: Good for newcomers
+
+- name: help wanted
+  color: '008672'
+  description: Extra attention is needed
+
+- name: invalid
+  color: 'e4e669'
+  description: This doesn't seem right
+
+- name: lifecycle
+  color: '312703'
+  description: Everything belonging to lifecycle management, including CI etc.
+
+- name: organisatorial
+  color: '753C01'
+  description: Organisatorial stuff
+
+- name: prepared
+  color: '4095C5'
+  description: task breakdown is done, issue is ready to be worked on
+
+- name: question
+  color: 'd876e3'
+  description: Further information is requested
+
+- name: refactoring
+  color: '7CD37D'
+  description: Refactor/improve code without adding functionality
+
+- name: request
+  color: '3F8BF5'
+  description: Requested item
+
+- name: visual
+  color: '6E4F74'
+  description: Involving visible features
+
+- name: wontfix
+  color: 'ffffff'
+  description: This will not be worked on
+
+- name: experimental
+  color: '000000'
+  description: Some experimental changes, e.g. innovative parts or not-yet-tested implementations
+
+- name: dependabot
+  color: '9F3434'
+  description: Dependabot-automated things.

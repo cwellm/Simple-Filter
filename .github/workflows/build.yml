@@ -1,0 +1,84 @@
+name: Build
+run-name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - I1_set-up-repository
+  pull_request:
+
+jobs:
+  build-linux:
+    concurrency: 
+      group: linux_build_${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-22.04
+    env:
+      Dockerfile: CI/Dockerfile.Linux
+      container_name: BuildApp
+      workspace_path: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - name: Execute Build
+        run: docker compose up --build --exit-code-from build_service
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Simple_Filter_Linux
+          path: ./artifacts/*
+          if-no-files-found: error
+      - name: Clean up
+        if: ${{ always() }}
+        run: docker compose down
+
+  # Get better understanding of Windows OS and automated installation possibilities first
+  #build-windows:
+  #  runs-on: windows-2022
+  #  env:
+  #    Dockerfile: CI/Dockerfile.Windows
+  #    container_name: BuildApp
+  #  steps:
+  #    - uses: actions/checkout@v3
+  #      with:
+  #        submodules: 'true'
+  #    - name: Execute Build
+  #      if: ${{ always() }}
+  #      run: docker compose up --build --exit-code-from build_service
+  #    - name: Clean up
+  #      run: docker compose down
+
+  build-windows:
+    concurrency: 
+      group: windows_build_${{ github.ref }}
+      cancel-in-progress: true
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - name: Execute build
+        run: "CI\\build.bat"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Simple_Filter_Windows
+          path: ./artifacts/*
+          if-no-files-found: error
+
+  build-macos:
+    concurrency: 
+      group: macos_build_${{ github.ref }}
+      cancel-in-progress: true 
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+      - name: Execute build
+        run: "CI/build.sh"
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Simple_Filter_Macos
+          path: ./artifacts/*
+          if-no-files-found: error

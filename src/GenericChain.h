@@ -3,6 +3,7 @@
 #include <stdexcept>
 #include <string>
 #include <sstream>
+#include <iostream>
 
 namespace cw::Filter {
 	template <class Inheritable, class FirstChainable, class... OtherChainables>

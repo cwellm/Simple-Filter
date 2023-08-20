@@ -21,13 +21,15 @@ namespace cw::Filter {
 	*/
 	template <class FirstChainable, class... OtherChainables>
 	class BiquadFilterChain : public GenericChain<BiquadFilter, FirstChainable, OtherChainables...> {
+		using GenericBiquadChain = GenericChain<BiquadFilter, FirstChainable, OtherChainables...>;
 
 		// std::map<int, std::vector<int>> as first arg. then I need a traversing algorithm - probably put this into
 		// an extra class? or put it here??? 
 		// then template <std::map, Chainable...> or so?
 	public:
 		explicit BiquadFilterChain(std::map<int, std::vector<int>> filterGraph) : filterGraph(filterGraph) {
-			isChain = true;
+			Chainable::isChain = true;
+			
 		}
 		explicit BiquadFilterChain() : BiquadFilterChain(std::map<int, std::vector<int>>{ {0, {} } }) {}
 
@@ -45,8 +47,8 @@ namespace cw::Filter {
 	// ------------------------------- Definitions -------------------------------
 	template <class FirstChainable, class... OtherChainables>
 	void BiquadFilterChain<FirstChainable, OtherChainables...>::reserveMemory(const int& size) {
-		auto it = chainables->begin();
-		while (it != chainables->end()) {
+		auto it = GenericBiquadChain::chainables->begin();
+		while (it != GenericBiquadChain::chainables->end()) {
 			(*it)->reserveMemory(size);
 			++it;
 		}
@@ -55,41 +57,41 @@ namespace cw::Filter {
 			copyOrig[i] = 0;
 		}
 
-		temporary = std::make_unique<float[]>(size);
+		BiquadFilter::temporary = std::make_unique<float[]>(size);
 		for (int i = 0; i < size; ++i) {
-			temporary[i] = 0;
+			BiquadFilter::temporary[i] = 0;
 		}
 	}
 
 	template <class FirstChainable, class... OtherChainables>
 	void BiquadFilterChain<FirstChainable, OtherChainables...>::processBlock(float* inMemBlock, const int& inBlockSize) {
-		auto it = chainables->begin();
+		auto it = GenericBiquadChain::chainables->begin();
 
-		if (!isParallel) {
-			while (it != chainables->end()) {
+		if (!GenericBiquadChain::isParallel) {
+			while (it != GenericBiquadChain::chainables->end()) {
 				(*it)->processBlock(inMemBlock, inBlockSize);
 				++it;
 			}
 		}
 		else {
-			int chainSize = chainables->size();		
+			int chainSize = GenericBiquadChain::chainables->size();		
 			for (int i = 0; i < inBlockSize; ++i) {
-				temporary[i] = 0;
+				BiquadFilter::temporary[i] = 0;
 			}
-			while (it != chainables->end()) {
+			while (it != GenericBiquadChain::chainables->end()) {
 				for (int i = 0; i < inBlockSize; ++i) {
 					copyOrig[i] = inMemBlock[i];
 				}
 				(*it)->processBlock(copyOrig.get(), inBlockSize);
 				
 				for (int i = 0; i < inBlockSize; ++i) {
-					temporary[i] += copyOrig[i]*1./chainSize;
+					BiquadFilter::temporary[i] += copyOrig[i]*1./chainSize;
 				}
 				++it;
 			}
 
 			for (int i = 0; i < inBlockSize; ++i) {
-				inMemBlock[i] = temporary[i];
+				inMemBlock[i] = BiquadFilter::temporary[i];
 			}
 		}
 	}
